@@ -29,7 +29,7 @@ public final class App {
 
         JavaRDD<String> wordsFromFile = inputFile.flatMap(line -> Arrays.asList(line.split(" ")).iterator());
 
-        JavaPairRDD<Integer, String> countData = wordsFromFile.mapToPair(word -> new Tuple2(word, 1)).reduceByKey((x, y) -> (int) x + (int) y);
+        JavaPairRDD<String, Integer> countData = wordsFromFile.mapToPair(word -> new Tuple2(word, 1)).reduceByKey((x, y) -> (int) x + (int) y);
 
         JavaPairRDD<Integer, String> output = countData.mapToPair(pair -> new Tuple2(pair._2, pair._1)).sortByKey(Comparator.reverseOrder());
 
@@ -39,7 +39,7 @@ public final class App {
 
         FileUtils.deleteQuietly(path.toFile());
 
-        countData.saveAsTextFile("Results");
+        output.saveAsTextFile(outputFolder);
 
         sparkContext.stop();
 
