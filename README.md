@@ -135,9 +135,4 @@ Create a new private static void process method that takes one argment, a String
 1. Use Maven to clean compile and build your fat jar file.
 1. Use java to run your App by including the fat jar in your classpath.
 
-## Finalize
-
-1. Create a cloud repo named "spark-challenge". Do NOT add a README in the cloud.
-1. Create a git repo in your local spark-challenge folder.
-1. Add and commit all files locally.
-1. Push your code to your cloud repo.
+java -cp target/spark-challenge-1.0.0-jar-with-dependencies.jar edu.nwmissouri.chasesmith.App "input.txt"
