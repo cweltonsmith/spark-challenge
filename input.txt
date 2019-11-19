@@ -1,0 +1,1 @@
+This is a test file in Bigdata for wordcount java. Again this is a a test file.
