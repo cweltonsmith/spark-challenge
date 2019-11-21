@@ -42,6 +42,7 @@ public final class App {
 
         output.saveAsTextFile(outputFolder);
 
+        sparkContext.close();
 
     }
 
