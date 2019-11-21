@@ -28,11 +28,11 @@ public final class App {
 
         JavaRDD<String> inputFile = sparkContext.textFile(fileName);
 
-        JavaRDD<String> wordsFromFile = inputFile.flatMap(line -> Arrays.asList(line.split(" ")).iterator());
+        JavaRDD<String> wordsFromFile = inputFile.flatMap(content -> Arrays.asList(content.split(" ")).iterator());
 
         JavaPairRDD<String, Integer> countData = wordsFromFile.mapToPair(word -> new Tuple2(word, 1)).reduceByKey((x, y) -> (int) x + (int) y);
 
-        JavaPairRDD<Integer, String> output = countData.mapToPair(pair -> new Tuple2(pair._2, pair._1)).sortByKey(Comparator.reverseOrder());
+        JavaPairRDD<Integer, String> output = countData.mapToPair(p -> new Tuple2(p._2, p._1)).sortByKey(Comparator.reverseOrder());
 
         String outputFolder = "Results";
 
@@ -42,13 +42,12 @@ public final class App {
 
         output.saveAsTextFile(outputFolder);
 
-        sparkContext.close();
 
     }
 
     public static void main(String[] args) {
 
-        if (args.length != 1) {
+        if (args.length == 0) {
             System.out.println("No files provided.");
             System.exit(0);
         }
