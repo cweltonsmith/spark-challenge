@@ -1,27 +1,28 @@
 package edu.nwmissouri.chasesmith;
 
-import org.apache.commons.io.FileUtils;
-//imports
+//Imports
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import scala.Tuple2;
-import scala.Tuple4;
-
 import java.util.Arrays;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import org.apache.commons.io.FileUtils;
 import java.util.Comparator;
 
 /**
  * Hello world!
  */
 public final class App {
+    private App(){
+
+    }
 
     private static void process(String fileName) {
 
-        SparkConf sparkConf = new SparkConf().setMaster("local").setAppName("JD Word Counter");
+        SparkConf sparkConf = new SparkConf().setMaster("local").setAppName("Challenge");
 
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
@@ -33,7 +34,7 @@ public final class App {
 
         JavaPairRDD<Integer, String> output = countData.mapToPair(pair -> new Tuple2(pair._2, pair._1)).sortByKey(Comparator.reverseOrder());
 
-        String outputFolder = "Output";
+        String outputFolder = "Results";
 
         Path path = FileSystems.getDefault().getPath(outputFolder);
 
@@ -41,18 +42,17 @@ public final class App {
 
         output.saveAsTextFile(outputFolder);
 
-        sparkContext.stop();
+        sparkContext.close();
 
     }
 
     public static void main(String[] args) {
 
-        if (args.length == 1) {
-            process(args[0]);
-        } else if (args.length == 0) {
+        if (args.length != 1) {
             System.out.println("No files provided.");
             System.exit(0);
         }
+        process(args[0]);
         
     }
 }
